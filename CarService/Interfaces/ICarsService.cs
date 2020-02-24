@@ -6,9 +6,9 @@ namespace BusinessLogicLayer.Interfaces
     public interface ICarsService
     {
         IEnumerable<CarModel> GetCars();
-        void AddNewCar(CarModel car);
-        CarModel GetDetails(int id);
-        void UpdateCar(CarModel car);
-        void DeleteCar(CarModel car);
+        CarModel GetById(int id);
+        void Create(CarModel car);
+        void Update(CarModel car);
+        void Delete(CarModel car);
     }
 }

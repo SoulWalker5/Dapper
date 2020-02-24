@@ -8,6 +8,7 @@ namespace DataAccessLayer.Models
         public int CarId { get; set; }
         public string Name { get; set; }
         public int Price { get; set; }
-        public ICollection<Car> Cars { get; set; }
+
+        public Car Car { get; set; }
     }
 }

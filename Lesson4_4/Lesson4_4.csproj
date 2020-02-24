@@ -58,6 +58,10 @@
       <Project>{89F79F3E-F598-469D-AAA4-D50EA0176527}</Project>
       <Name>PresentationLayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CarRepository\DataAccessLayer.csproj">
+      <Project>{634205C5-8C05-40F2-AA68-F84C08839974}</Project>
+      <Name>DataAccessLayer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

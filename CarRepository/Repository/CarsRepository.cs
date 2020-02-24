@@ -52,29 +52,9 @@ namespace DataAccessLayer.Repository
             }
         }
 
-        public Car GetDetails(int id)
-        {
-            var sql = $"SELECT * FROM Cars Car INNER JOIN Details Detail on Car.Id = Detail.CarId WHERE Car.Id = {id}";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                var result = connection.Query<Car, Detail, Car>(sql, (car, detail) =>
-                {
-                    car.Detail = detail;
-
-                    return car;
-                }).ToList();
-
-                connection.Close();
-
-                return result.FirstOrDefault();
-            }
-        }
-
         public void Create(Car car)
         {
-            var sql = $"INSERT INTO Cars (Name) VALUES ('{car.Name}')";
+            var sql = $"INSERT INTO Cars (Name) OUTPUT INSERTED.Id VALUES ('{car.Name}')";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -100,17 +80,21 @@ namespace DataAccessLayer.Repository
 
         public Car GetById(int id)
         {
-            var sql = $"SELECT * FROM Cars c INNER JOIN Details в on в.Id = c.CarId WHERE h.Id = {id};";
+            var sql = $"SELECT * FROM Cars car INNER JOIN Details detail on car.Id = detail.CarId WHERE car.Id = {id}";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
                 var result = connection.Query<Car, Detail, Car>(sql, (car, detail) =>
                 {
-                    car.Detail = detail;
+                    car.Parts.Add(detail);
 
                     return car;
-                });
+                }).ToList();
+
+                var resultEntity = result.FirstOrDefault();
+                resultEntity.Parts = result.SelectMany(x => x.Parts).ToList();
+
                 connection.Close();
 
                 return result.FirstOrDefault();

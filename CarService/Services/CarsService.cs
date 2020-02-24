@@ -2,8 +2,8 @@
 using System.Linq;
 using BusinessLogicLayer.Interfaces;
 using BusinessLogicLayer.Models;
-using DataAccessLayer;
 using DataAccessLayer.Interfaces;
+using DataAccessLayer.Models;
 using DataAccessLayer.Repository;
 
 namespace BusinessLogicLayer.Services
@@ -12,31 +12,53 @@ namespace BusinessLogicLayer.Services
     {
         ICarsRepository repository = new CarsRepository();
 
-        public void AddNewCar(CarModel car)
+        public void Create(CarModel carmodel)
         {
-            throw new System.NotImplementedException();
+            var car = new Car
+            {
+                 Id = carmodel.Id,
+                 Name = carmodel.Name
+            };
+            repository.Create(car);
         }
 
-        public void DeleteCar(CarModel car)
+        public void Delete(CarModel carmodel)
         {
-            throw new System.NotImplementedException();
+            var car = new Car
+            {
+                Id = carmodel.Id,
+                Name = carmodel.Name
+            };
+            repository.Delete(car);
         }
 
         public IEnumerable<CarModel> GetCars()
         {
-            var carsModels = from car in repository.GetCars()
-                             select new CarModel() { Id = car.Id, Name = car.Name };
+
+            var carsModels = repository.GetCars().Select(x => new CarModel { Id = x.Id, Name = x.Name });
             return carsModels;
         }
 
-        public CarModel GetDetails(int id)
+        public CarModel GetById(int id)
         {
-            throw new System.NotImplementedException();
+            Car car = repository.GetById(id);
+
+            var carsModel = new CarModel()
+            {
+                Id = car.Id,
+                Name = car.Name
+            };
+            return carsModel;
         }
 
-        public void UpdateCar(CarModel car)
+        public void Update(CarModel carmodel)
         {
-            throw new System.NotImplementedException();
+            var car = new Car
+            {
+                Id = carmodel.Id,
+                Name = carmodel.Name
+            };
+            repository.Update(car);
         }
     }
 }

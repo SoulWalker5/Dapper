@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using Dapper;
 using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
@@ -20,11 +21,6 @@ namespace DataAccessLayer.Repository
                 var result = connection.Execute(sql);
                 connection.Close();
             };
-        }
-
-        public Detail GetCar(int id)
-        {
-            throw new System.NotImplementedException();
         }
 
         public IEnumerable<Detail> GetDetails()
@@ -49,7 +45,8 @@ namespace DataAccessLayer.Repository
                         {
                             Id = (int)reader["Id"],
                             CarId = (int)reader["CarId"],
-                            Name = (string)reader["Name"]
+                            Name = (string)reader["Name"],
+                            Price = (int)reader["Price"]
                         });
                     }
                 }
@@ -75,7 +72,7 @@ namespace DataAccessLayer.Repository
 
         public void Update(Detail detail)
         {
-            var sql = $"UPDATE Details SET Name = '{detail.Name}', Cost = {detail.Price} WHERE ID = {detail.Id}";
+            var sql = $"UPDATE Details SET Name = '{detail.Name}', Price = {detail.Price} WHERE ID = {detail.Id}";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -83,6 +80,27 @@ namespace DataAccessLayer.Repository
                 var result = connection.Execute(sql);
                 connection.Close();
             };
+        }
+
+        public Detail GetById(int id)
+        {
+            var sql = $"SELECT * FROM Details d INNER JOIN Cars c on c.Id = d.CarId WHERE d.Id = {id};";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                var result = connection.Query<Detail, Car, Detail>(sql, (detail, car) =>
+                {
+                    detail.Car = car;
+
+                    return detail;
+                });
+
+                connection.Close();
+
+                return result.FirstOrDefault();
+            }
         }
     }
 }
