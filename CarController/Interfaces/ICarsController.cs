@@ -10,5 +10,7 @@ namespace PresentationLayer.Interfaces
         void Delete(CarViewModel carViewModel);
         void Update(CarViewModel carViewModel);
         CarViewModel GetById(int id);
+        //IEnumerable<DetailViewModel> Details();
+
     }
 }

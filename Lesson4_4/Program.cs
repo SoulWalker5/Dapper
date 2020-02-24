@@ -15,6 +15,8 @@ namespace Lesson4_4
             var carsController = new CarsController();
             var detailController = new DetailsController();
 
+            var h = carsController.GetСars();
+            var z = detailController.GetDetails();
             var detail = detailController.GetById(3);
 
             var car = carsController.GetById(2);

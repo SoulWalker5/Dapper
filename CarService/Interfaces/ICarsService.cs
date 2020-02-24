@@ -10,5 +10,7 @@ namespace BusinessLogicLayer.Interfaces
         void Create(CarModel car);
         void Update(CarModel car);
         void Delete(CarModel car);
+        //IEnumerable<DetailModel> Details();
+
     }
 }

@@ -34,6 +34,19 @@ namespace PresentationLayer.Controllers
             service.Delete(carModel);
         }
 
+        //public IEnumerable<DetailViewModel> Details()
+        //{
+        //    var detailsViewModel = service.Details().Select(x => new DetailViewModel
+        //    {
+        //        Id = x.Id,
+        //        CarId = x.CarId,
+        //        Name = x.Name,
+        //        Price = x.Price
+        //    });
+
+        //    return detailsViewModel;
+        //}
+
         public CarViewModel GetById(int id)
         {
             CarModel carModel = service.GetById(id);
@@ -48,8 +61,18 @@ namespace PresentationLayer.Controllers
 
         public IEnumerable<CarViewModel> GetСars()
         {
-            var carsViewModel = service.GetCars().Select(x => new CarViewModel { Id = x.Id, Name = x.Name });
-
+            var carsViewModel = service.GetCars().Select(x => new CarViewModel
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Parts = x.Parts.Select(u => new DetailViewModel
+                {
+                    Id = u.Id,
+                    CarId = u.CarId,
+                    Name = u.Name,
+                    Price = u.Price
+                }).ToList()
+                });
             return carsViewModel;
         }
 

@@ -42,12 +42,12 @@ namespace DataAccessLayer.Repository
                         result.Add(new Car
                         {
                             Id = (int)reader["Id"],
-                            Name = (string)reader["Name"]
-                        });
+                            Name = (string)reader["Name"],
+                            Parts = Details((int)reader["Id"]).AsList()
+                    });
                     }
                 }
                 connection.Close();
-
                 return result;
             }
         }
@@ -99,6 +99,27 @@ namespace DataAccessLayer.Repository
 
                 return result.FirstOrDefault();
             };
+        }
+
+        public IEnumerable<Detail> Details(int Id)
+        {
+            var sql = $"SELECT * FROM Details d INNER JOIN Cars c on c.Id = d.CarId WHERE c.Id = {Id};";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                var result = connection.Query<Detail, Car, Detail>(sql, (detail, car) =>
+                {
+                    detail.Car = car;
+
+                    return detail;
+                });
+
+                connection.Close();
+
+                return result;
+            }
         }
     }
 }

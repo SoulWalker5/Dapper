@@ -16,8 +16,8 @@ namespace BusinessLogicLayer.Services
         {
             var car = new Car
             {
-                 Id = carmodel.Id,
-                 Name = carmodel.Name
+                Id = carmodel.Id,
+                Name = carmodel.Name
             };
             repository.Create(car);
         }
@@ -34,8 +34,19 @@ namespace BusinessLogicLayer.Services
 
         public IEnumerable<CarModel> GetCars()
         {
+            var carsModels = repository.GetCars().Select(x => new CarModel
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Parts = x.Parts.Select(u => new DetailModel
+                {
+                    Id = u.Id,
+                    CarId = u.CarId,
+                    Name = u.Name,
+                    Price = u.Price
+                }).ToList()
+            });
 
-            var carsModels = repository.GetCars().Select(x => new CarModel { Id = x.Id, Name = x.Name });
             return carsModels;
         }
 
@@ -60,5 +71,11 @@ namespace BusinessLogicLayer.Services
             };
             repository.Update(car);
         }
+
+        //public IEnumerable<DetailModel> Details()
+        //{
+        //    var detailsModel = repository.Details().Select(x => new DetailModel { Id = x.Id, CarId = x.CarId, Name = x.Name, Price = x.Price });
+        //    return detailsModel;
+        //}
     }
 }
