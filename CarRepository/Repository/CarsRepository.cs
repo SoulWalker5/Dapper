@@ -100,26 +100,5 @@ namespace DataAccessLayer.Repository
                 return result.FirstOrDefault();
             };
         }
-
-        public IEnumerable<Detail> Details()
-        {
-            var sql = $"SELECT * FROM Details d INNER JOIN Cars c on c.Id = d.CarId";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                var result = connection.Query<Detail, Car, Detail>(sql, (detail, car) =>
-                {
-                    detail.Car = car;
-
-                    return detail;
-                });
-
-                connection.Close();
-
-                return result;
-            }
-        }
     }
 }

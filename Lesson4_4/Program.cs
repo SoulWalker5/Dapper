@@ -18,6 +18,7 @@ namespace Lesson4_4
             
             var vehicles = carsController.GetСars();
 
+            var h = carsController.GetById(1);
         }
     }
 }

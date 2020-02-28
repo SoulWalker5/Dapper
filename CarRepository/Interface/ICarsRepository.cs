@@ -10,6 +10,5 @@ namespace DataAccessLayer.Interfaces
         void Create(Car car);
         void Delete(int id);
         void Update(Car car);
-        IEnumerable<Detail> Details();
     }
 }

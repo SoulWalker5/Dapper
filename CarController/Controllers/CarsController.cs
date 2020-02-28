@@ -35,7 +35,14 @@ namespace PresentationLayer.Controllers
             var carViewModel = new CarViewModel()
             {
                 Id = carModel.Id,
-                Name = carModel.Name
+                Name = carModel.Name,
+                Parts = carModel.Parts.Select(u => new DetailViewModel
+                {
+                    Id = u.Id,
+                    CarId = u.CarId,
+                    Name = u.Name,
+                    Price = u.Price
+                }).ToList()
             };
             return carViewModel;
         }
@@ -53,7 +60,7 @@ namespace PresentationLayer.Controllers
                     Name = u.Name,
                     Price = u.Price
                 }).ToList()
-                });
+            });
             return carsViewModel;
         }
 

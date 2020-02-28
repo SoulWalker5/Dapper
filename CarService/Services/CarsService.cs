@@ -52,7 +52,14 @@ namespace BusinessLogicLayer.Services
             var carsModel = new CarModel()
             {
                 Id = car.Id,
-                Name = car.Name
+                Name = car.Name,
+                Parts = car.Parts.Select(u => new DetailModel
+                {
+                    Id = u.Id,
+                    CarId = u.CarId,
+                    Name = u.Name,
+                    Price = u.Price
+                }).ToList()
             };
             return carsModel;
         }
