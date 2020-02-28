@@ -23,29 +23,10 @@ namespace PresentationLayer.Controllers
             service.Create(carModel);
         }
 
-        public void Delete(CarViewModel carViewModel)
+        public void Delete(int id)
         {
-            CarModel carModel = new CarModel
-            {
-                Id = carViewModel.Id,
-                Name = carViewModel.Name
-
-            };
-            service.Delete(carModel);
+            service.Delete(id);
         }
-
-        //public IEnumerable<DetailViewModel> Details()
-        //{
-        //    var detailsViewModel = service.Details().Select(x => new DetailViewModel
-        //    {
-        //        Id = x.Id,
-        //        CarId = x.CarId,
-        //        Name = x.Name,
-        //        Price = x.Price
-        //    });
-
-        //    return detailsViewModel;
-        //}
 
         public CarViewModel GetById(int id)
         {

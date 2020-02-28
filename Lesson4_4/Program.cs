@@ -1,4 +1,5 @@
-﻿using PresentationLayer.Controllers;
+﻿using DataAccessLayer.Repository;
+using PresentationLayer.Controllers;
 using PresentationLayer.Interfaces;
 using PresentationLayer.ViewModels;
 using System;
@@ -14,12 +15,9 @@ namespace Lesson4_4
         {
             var carsController = new CarsController();
             var detailController = new DetailsController();
+            
+            var vehicles = carsController.GetСars();
 
-            var h = carsController.GetСars();
-            var z = detailController.GetDetails();
-            var detail = detailController.GetById(3);
-
-            var car = carsController.GetById(2);
         }
     }
 }

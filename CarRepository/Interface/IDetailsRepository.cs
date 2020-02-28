@@ -8,7 +8,7 @@ namespace DataAccessLayer.Interfaces
         Detail GetById(int id);
         IEnumerable<Detail> GetDetails();
         void Create(Detail detail);
-        void Delete(Detail detail);
+        void Delete(int id);
         void Update(Detail detail);
     }
 }

@@ -25,17 +25,9 @@ namespace PresentationLayer.Controllers
             service.Create(detailModel);
         }
 
-        public void Delete(DetailViewModel detailViewModel)
+        public void Delete(int id)
         {
-            DetailModel detailModel = new DetailModel
-            {
-                Id = detailViewModel.Id,
-                CarId = detailViewModel.CarId,
-                Name = detailViewModel.Name,
-                Price = detailViewModel.Price
-
-            };
-            service.Delete(detailModel);
+            service.Delete(id);
         }
 
         public IEnumerable<DetailViewModel> GetDetails()

@@ -11,9 +11,9 @@ namespace DataAccessLayer.Repository
     {
         private static readonly string connectionString = @"Initial Catalog=AutoDB;Integrated Security=True";
 
-        public void Delete(Car car)
+        public void Delete(int id)
         {
-            var sql = $"DELETE FROM Cars WHERE Id = {car.Id}";
+            var sql = $"DELETE FROM Cars WHERE Id = {id}";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -25,32 +25,32 @@ namespace DataAccessLayer.Repository
 
         public IEnumerable<Car> GetCars()
         {
-            var query = "SELECT * FROM Cars";
-            var result = new List<Car>();
-            SqlConnection connection = new SqlConnection(connectionString);
+            var sqlQuery = $"SELECT* FROM Cars c LEFT JOIN Details d on c.Id = d.CarId WHERE c.Id = d.CarId";
 
-            using (connection)
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand(query, connection);
-                SqlDataReader reader = command.ExecuteReader();
 
-                if (reader.HasRows)
+                var result = new List<Car>();
+                var queryResult = connection.Query<Car, Detail, Car>(sqlQuery, (car, detail) =>
                 {
-                    while (reader.Read())
+                    var existingCar = result.FirstOrDefault(x => x.Id == car.Id);
+                    if (existingCar == null)
                     {
-                        result.Add(new Car
-                        {
-                            Id = (int)reader["Id"],
-                            Name = (string)reader["Name"],
-                            Parts = Details((int)reader["Id"]).AsList()
-                    });
+                        result.Add(car);
+                        existingCar = car;
                     }
-                }
+
+                    existingCar.Parts.Add(detail);
+                    return car;
+
+                });
+
                 connection.Close();
                 return result;
-            }
+            };
         }
+    
 
         public void Create(Car car)
         {
@@ -101,9 +101,9 @@ namespace DataAccessLayer.Repository
             };
         }
 
-        public IEnumerable<Detail> Details(int Id)
+        public IEnumerable<Detail> Details()
         {
-            var sql = $"SELECT * FROM Details d INNER JOIN Cars c on c.Id = d.CarId WHERE c.Id = {Id};";
+            var sql = $"SELECT * FROM Details d INNER JOIN Cars c on c.Id = d.CarId";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {

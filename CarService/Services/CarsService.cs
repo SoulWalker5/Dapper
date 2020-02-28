@@ -22,14 +22,9 @@ namespace BusinessLogicLayer.Services
             repository.Create(car);
         }
 
-        public void Delete(CarModel carmodel)
+        public void Delete(int id)
         {
-            var car = new Car
-            {
-                Id = carmodel.Id,
-                Name = carmodel.Name
-            };
-            repository.Delete(car);
+            repository.Delete(id);
         }
 
         public IEnumerable<CarModel> GetCars()
@@ -71,11 +66,5 @@ namespace BusinessLogicLayer.Services
             };
             repository.Update(car);
         }
-
-        //public IEnumerable<DetailModel> Details()
-        //{
-        //    var detailsModel = repository.Details().Select(x => new DetailModel { Id = x.Id, CarId = x.CarId, Name = x.Name, Price = x.Price });
-        //    return detailsModel;
-        //}
     }
 }

@@ -11,9 +11,9 @@ namespace DataAccessLayer.Repository
     {
         private static readonly string connectionString = @"Initial Catalog=AutoDB;Integrated Security=True";
 
-        public void Delete(Detail detail)
+        public void Delete(int id)
         {
-            var sql = $"DELETE FROM Details WHERE Id = {detail.Id}";
+            var sql = $"DELETE FROM Details WHERE Id = {id}";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
